@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Awesome Image Gallery</h1>
+    </header>
+
+    <div class="gallery-controls">
+        <button id="allFilter" class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="nature">Nature</button>
+        <button class="filter-btn" data-category="city">City</button>
+        <button class="filter-btn" data-category="abstract">Abstract</button>
+    </div>
+
+    <main class="gallery-container">
+        <div class="gallery-item nature" data-src="images/nature1.jpg" data-category="nature">
+            <img src="images/thumbnails/nature1_thumb.jpg" alt="Nature Image 1">
+            <div class="overlay"><span>View</span></div>
+        </div>
+        <div class="gallery-item city" data-src="images/city1.jpg" data-category="city">
+            <img src="images/thumbnails/city1_thumb.jpg" alt="City Image 1">
+            <div class="overlay"><span>View</span></div>
+        </div>
+        <div class="gallery-item abstract" data-src="images/abstract1.jpg" data-category="abstract">
+            <img src="images/thumbnails/abstract1_thumb.jpg" alt="Abstract Image 1">
+            <div class="overlay"><span>View</span></div>
+        </div>
+        <div class="gallery-item nature" data-src="images/nature2.jpg" data-category="nature">
+            <img src="images/thumbnails/nature2_thumb.jpg" alt="Nature Image 2">
+            <div class="overlay"><span>View</span></div>
+        </div>
+        <div class="gallery-item city" data-src="images/city2.jpg" data-category="city">
+            <img src="images/thumbnails/city2_thumb.jpg" alt="City Image 2">
+            <div class="overlay"><span>View</span></div>
+        </div>
+        <div class="gallery-item abstract" data-src="images/abstract2.jpg" data-category="abstract">
+            <img src="images/thumbnails/abstract2_thumb.jpg" alt="Abstract Image 2">
+            <div class="overlay"><span>View</span></div>
+        </div>
+    </main>
+
+    <div class="lightbox">
+        <span class="close-btn">&times;</span>
+        <img class="lightbox-image" src="" alt="Lightbox Image">
+        <a class="prev-btn">&#10094;</a>
+        <a class="next-btn">&#10095;</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
