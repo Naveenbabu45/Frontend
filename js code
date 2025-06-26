@@ -1,0 +1,103 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox-image');
+    const closeBtn = document.querySelector('.close-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryContainer = document.querySelector('.gallery-container');
+
+    let currentImageIndex = 0;
+    let filteredImages = []; // To store currently visible images for navigation
+
+    // Function to update filteredImages based on current display
+    const updateFilteredImages = () => {
+        filteredImages = Array.from(document.querySelectorAll('.gallery-item'))
+            .filter(item => getComputedStyle(item).display !== 'none');
+    };
+
+    // Open Lightbox
+    galleryItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            currentImageIndex = Array.from(filteredImages).indexOf(item); // Get index within filtered images
+            showImage(currentImageIndex);
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+        });
+    });
+
+    // Close Lightbox
+    closeBtn.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    });
+
+    // Keyboard navigation for lightbox
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'ArrowLeft') {
+                navigate(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigate(1);
+            } else if (e.key === 'Escape') {
+                closeBtn.click();
+            }
+        }
+    });
+
+    // Show Image in Lightbox
+    const showImage = (index) => {
+        if (filteredImages.length === 0) return; // No images to show
+
+        let imageToShow = filteredImages[index];
+        if (!imageToShow) { // Handle cases where index might be out of bounds after filtering
+            if (index < 0) currentImageIndex = filteredImages.length - 1;
+            else if (index >= filteredImages.length) currentImageIndex = 0;
+            imageToShow = filteredImages[currentImageIndex];
+        } else {
+            currentImageIndex = index;
+        }
+
+        const imgSrc = imageToShow.dataset.src;
+        lightboxImage.src = imgSrc;
+    };
+
+    // Navigate (Prev/Next)
+    const navigate = (direction) => {
+        currentImageIndex += direction;
+        if (currentImageIndex < 0) {
+            currentImageIndex = filteredImages.length - 1;
+        } else if (currentImageIndex >= filteredImages.length) {
+            currentImageIndex = 0;
+        }
+        showImage(currentImageIndex);
+    };
+
+    prevBtn.addEventListener('click', () => navigate(-1));
+    nextBtn.addEventListener('click', () => navigate(1));
+
+    // Image Filtering
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.dataset.category;
+
+            // Remove active class from all buttons and add to the clicked one
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            galleryItems.forEach(item => {
+                const itemCategory = item.dataset.category;
+                if (category === 'all' || itemCategory === category) {
+                    item.style.display = 'block'; // Or 'grid-item', depending on your CSS display
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            updateFilteredImages(); // Update the array of images visible after filtering
+        });
+    });
+
+    // Initial load: Ensure all images are visible and update filteredImages
+    filterButtons[0].click(); // Simulate click on "All" to initialize
+});
